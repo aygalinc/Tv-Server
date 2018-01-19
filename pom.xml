@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>fr.aygalinc.tv</groupId>
+    <artifactId>tv.reactor</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+
+    <properties>
+        <!-- Plug in version-->
+        <exec.maven.plugin>1.2.1</exec.maven.plugin>
+        <heroku.plugin>0.4.4</heroku.plugin>
+        <!--Maven Compiler Config-->
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+
+        <!--Spark Version -->
+        <spark.version>2.5</spark.version>
+        <spark.debug.version>0.5</spark.debug.version>
+
+        <!--Google http client library-->
+        <google.http.version>1.23.0</google.http.version>
+
+        <!-- LOG -->
+        <slf4j.version>1.7.13</slf4j.version>
+    </properties>
+
+    <modules>
+        <module>tv-server</module>
+    </modules>
+    <!-- library default dependencies config -->
+    <dependencyManagement>
+
+        <dependencies>
+            <dependency>
+                <groupId>com.sparkjava</groupId>
+                <artifactId>spark-core</artifactId>
+                <version>${spark.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.sparkjava</groupId>
+                <artifactId>spark-debug-tools</artifactId>
+                <version>${spark.debug.version}</version>
+            </dependency>
+
+
+            <dependency>
+                <groupId>com.google.http-client</groupId>
+                <artifactId>google-http-client-jackson2</artifactId>
+                <version>${google.http.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.google.http-client</groupId>
+                <artifactId>google-http-client</artifactId>
+                <version>${google.http.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-simple</artifactId>
+                <version>${slf4j.version}</version>
+            </dependency>
+
+
+
+        </dependencies>
+
+    </dependencyManagement>
+
+    <build>
+        <pluginManagement>
+
+                <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>exec-maven-plugin</artifactId>
+                        <version>${exec.maven.plugin}</version>
+                    </plugin>
+
+                    <plugin>
+                        <groupId>com.heroku.sdk</groupId>
+                        <artifactId>heroku-maven-plugin</artifactId>
+                        <version>${heroku.plugin}</version>
+                        <configuration>
+                            <jdkVersion>1.8</jdkVersion>
+                        </configuration>
+                    </plugin>
+                </plugins>
+
+        </pluginManagement>
+    </build>
+
+</project>
