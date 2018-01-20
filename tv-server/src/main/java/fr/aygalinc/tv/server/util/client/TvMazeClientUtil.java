@@ -6,7 +6,6 @@ import com.google.api.client.http.HttpRequestFactory;
 import com.google.api.client.http.HttpResponse;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.JsonObjectParser;
-import fr.aygalinc.tv.server.show.model.ShowExtraInformation;
 import fr.aygalinc.tv.server.show.model.ShowItem;
 import fr.aygalinc.tv.server.show.model.ShowMainInformation;
 import fr.aygalinc.tv.server.show.model.image.ImageFile;
@@ -40,24 +39,24 @@ public class TvMazeClientUtil {
         HttpResponse response =request(TvMazeUtil.SHOW_URL+id);
 
 
-        ShowExtraInformation extraInformation;
+        ShowMainInformation mainInformation;
         ImageFile imageFile;
 
         try {
-            extraInformation = response.parseAs(ShowExtraInformation.class);
+            mainInformation = response.parseAs(ShowMainInformation.class);
         }catch (IOException e){
             LOG.error("Error occurs during parsing extra information of Maze Tv api ",e);
             return null;
         }
 
         try {
-            imageFile = getShowImageFromTvMaze(extraInformation);
+            imageFile = getShowImageFromTvMaze(mainInformation);
         }catch (IOException e){
             LOG.error("Error occurs during getting image of Maze Tv api ",e);
             return null;
         }
 
-        return new ShowItem(extraInformation,imageFile);
+        return new ShowItem(mainInformation,imageFile);
     }
 
 
@@ -69,7 +68,7 @@ public class TvMazeClientUtil {
 
         return Arrays.stream(showFeed).filter(Objects::nonNull).map(
                 a -> {
-                    ShowExtraInformation extraInformation= a.getShowExtraInformation();
+                    ShowMainInformation extraInformation= a.getShowExtraInformation();
                     ImageFile imageFile;
 
                     try {

@@ -6,10 +6,10 @@ public class ShowItem {
 
     private final ImageFile image;
 
-    private final ShowExtraInformation showInformation;
+    private final ShowMainInformation showInformation;
 
-    public ShowItem(ShowExtraInformation mainInformation, ImageFile image){
-        this.showInformation = mainInformation;
+    public ShowItem(ShowMainInformation showInformation, ImageFile image){
+        this.showInformation = showInformation;
         this.image = image;
     }
 
@@ -17,7 +17,7 @@ public class ShowItem {
         return showInformation.getId();
     }
 
-    public ShowExtraInformation getExtraInformation() {
+    public ShowMainInformation getExtraInformation() {
         return showInformation;
     }
 

@@ -1,7 +1,7 @@
 package fr.aygalinc.tv.server.util.client.adapter;
 
 import com.google.api.client.util.Key;
-import fr.aygalinc.tv.server.show.model.ShowExtraInformation;
+import fr.aygalinc.tv.server.show.model.ShowMainInformation;
 
 /**
  * Extra class, can certainly be avoid if i have a better knoledge of JSON serialisation
@@ -9,9 +9,9 @@ import fr.aygalinc.tv.server.show.model.ShowExtraInformation;
 public class ShowMainInformationArrayAdapter {
 
     @Key("show")
-    public ShowExtraInformation show;
+    public ShowMainInformation show;
 
-    public ShowExtraInformation getShowExtraInformation(){
+    public ShowMainInformation getShowExtraInformation(){
         return show;
     }
 
