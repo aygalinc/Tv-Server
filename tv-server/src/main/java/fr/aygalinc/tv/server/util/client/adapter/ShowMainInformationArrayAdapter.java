@@ -11,7 +11,7 @@ public class ShowMainInformationArrayAdapter {
     @Key("show")
     public ShowMainInformation show;
 
-    public ShowMainInformation getShowExtraInformation(){
+    public ShowMainInformation getShowInformation(){
         return show;
     }
 

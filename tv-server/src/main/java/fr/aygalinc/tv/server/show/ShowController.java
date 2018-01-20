@@ -13,6 +13,7 @@ import spark.Route;
 import javax.imageio.ImageIO;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.List;
 
@@ -73,10 +74,8 @@ public class ShowController {
 
             response.raw().setContentType("image/jpeg");
 
-            File f = show.getImage().getFile();
-
             try (OutputStream out = response.raw().getOutputStream()) {
-                ImageIO.write(ImageIO.read(f), "jpg", out);
+                ImageIO.write(show.getImage().getBufferedImage(), "jpg", out);
             }catch (IOException e){
                 LOG.error("Error occurs when trying to write the show image as response");
                 response.status(500);

@@ -1,9 +1,12 @@
 package fr.aygalinc.tv.server.show.model.image;
 
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
 
-public class ImageFile {
+public class ImageFile implements Image {
 
     private final File file;
 
@@ -15,4 +18,8 @@ public class ImageFile {
         return file;
     }
 
+    @Override
+    public BufferedImage getBufferedImage() throws IOException {
+        return ImageIO.read(file);
+    }
 }

@@ -1,14 +1,14 @@
 package fr.aygalinc.tv.server.show.model;
 
-import fr.aygalinc.tv.server.show.model.image.ImageFile;
+import fr.aygalinc.tv.server.show.model.image.Image;
 
 public class ShowItem {
 
-    private final ImageFile image;
+    private final Image image;
 
     private ShowMainInformation showInformation;
 
-    public ShowItem(ShowMainInformation showInformation, ImageFile image){
+    public ShowItem(ShowMainInformation showInformation, Image image){
         this.showInformation = showInformation;
         this.image = image;
     }
@@ -25,7 +25,7 @@ public class ShowItem {
         this.showInformation = showInformation;
     }
 
-    public ImageFile getImage() {
+    public Image getImage() {
         return image;
     }
 }
