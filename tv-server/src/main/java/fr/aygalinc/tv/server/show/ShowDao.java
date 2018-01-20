@@ -22,32 +22,38 @@ public class ShowDao{
 
     private static final Logger LOG = LoggerFactory.getLogger(ShowDao.class);
 
+    // In case of concurrent request multiple thread can access to the map, so it mus support concurrency
     private Map<Long, ShowTimeStampWrapper> shows = new ConcurrentHashMap<>();
 
     public ShowItem getShowById(Long key){
 
         if (key == null){
-            System.out.println(" key null");
             throw new InvalidParameterException();
         }
 
+        /**
+         * Try cache first
+         */
         ShowTimeStampWrapper show = shows.get(key);
 
         if(show != null){
-            System.out.println(" Try cache");
             if (show.isValid()) {
                 return show.getShowItem();
             }
         }
 
+        /**
+         * Else try distant server
+         */
         try {
-            System.out.println(" Try service");
-            show = new ShowTimeStampWrapper(TvMazeClientUtil.getShowFromTvMaze(key.toString()));
-            System.out.println(" show " + show);
-            System.out.println(" show " + show.getShowItem());
+            ShowTimeStampWrapper showTimeStampWrapper = new ShowTimeStampWrapper(TvMazeClientUtil.getShowFromTvMaze(key.toString()));
 
-            shows.put(show.getShowItem().getId(),show);
-            return show.getShowItem();
+            if (show == null){
+                shows.put(showTimeStampWrapper.getShowItem().getId(),showTimeStampWrapper);
+            }else {
+                show.refreshCache(showTimeStampWrapper);
+            }
+            return showTimeStampWrapper.getShowItem();
         } catch (IOException e) {
             LOG.error("Error occurs when demanding",e);
             return null;
@@ -57,25 +63,40 @@ public class ShowDao{
     public List<ShowMainInformation> getShowByName(String name){
 
         if (name == null){
-            System.out.println(" Name is null ");
             throw new InvalidParameterException();
         }
 
         try {
-            System.out.println(" request");
             List<ShowItem> showsResponse = TvMazeClientUtil.getShowsFromTvMaze(name);
             for (ShowItem show : showsResponse){
-                shows.put(show.getId(),new ShowTimeStampWrapper(show));
+                if (shows.containsKey(show.getId())){
+                    // refresh case
+                    shows.get(show.getId()).refreshCache(show);
+                }else {
+                    // new show discover case
+                    shows.put(show.getId(),new ShowTimeStampWrapper(show));
+                }
+
             }
-            return showsResponse.stream().map(a -> a.getExtraInformation()).collect(Collectors.toList());
+            return showsResponse.stream().map(a -> a.getInformation()).collect(Collectors.toList());
 
         } catch (IOException e) {
             LOG.error("Error occurs when demanding",e);
-            return null;
+            //Try to serve on of the cache response;
+            return shows.values().stream().filter(
+                    (ShowTimeStampWrapper showTimeStampWrapper) -> {
+                        if(!showTimeStampWrapper.isValid()){
+                            return false;
+                        }
+                        return showTimeStampWrapper.getShowItem().getInformation().getName().contains(name);
+                    }
+
+            ).map(a -> a.getShowItem().getInformation()).collect(Collectors.toList());
         }
 
     }
 
+    //Wrapper to maintain cache
     private class ShowTimeStampWrapper {
 
         private LocalDateTime timeStamp;
@@ -96,6 +117,16 @@ public class ShowDao{
 
         public ShowItem getShowItem() {
             return showItem;
+        }
+
+        public void refreshCache(ShowTimeStampWrapper show){
+            timeStamp = show.timeStamp;
+            showItem.setInformation(show.getShowItem().getInformation());
+        }
+
+        public void refreshCache(ShowItem show){
+            timeStamp = LocalDateTime.now();
+            showItem.setInformation(show.getInformation());
         }
     }
 }

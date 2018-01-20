@@ -32,7 +32,7 @@ public class ShowController {
 
         try {
             ShowItem show = showDao.getShowById(Long.valueOf(id));
-            return JsonUtil.serialize(show.getExtraInformation());
+            return JsonUtil.serialize(show.getInformation());
         }catch (NumberFormatException e){
             LOG.error("Invalid parameter form for /showd/:id",e);
             response.status(500);
