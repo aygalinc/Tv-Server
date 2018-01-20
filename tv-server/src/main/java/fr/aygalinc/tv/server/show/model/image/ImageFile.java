@@ -5,7 +5,7 @@ import java.io.File;
 
 public class ImageFile {
 
-    private File file;
+    private final File file;
 
     public ImageFile(File f){
         this.file = f;
@@ -13,10 +13,6 @@ public class ImageFile {
 
     public File getFile() {
         return file;
-    }
-
-    public void setFile(File file) {
-        this.file = file;
     }
 
 }
