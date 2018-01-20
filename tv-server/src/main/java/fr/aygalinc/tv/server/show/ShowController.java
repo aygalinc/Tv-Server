@@ -46,7 +46,7 @@ public class ShowController {
 
     public Route getShows = (Request request, Response response) -> {
 
-        String id = request.params(":id");
+        String id = request.queryParams("search");
 
         if (id == null){
             return null;

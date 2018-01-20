@@ -22,7 +22,7 @@ public class TvServer {
 
         get(ServerPath.SHOW+":id", showController.getShow);
 
-        get(ServerPath.SHOW, showController.getShows);
+        get(ServerPath.SHOWS, showController.getShows);
 
         get(ServerPath.SHOW +":id"+ ServerPath.IMAGE, showController.getShowImage);
 
