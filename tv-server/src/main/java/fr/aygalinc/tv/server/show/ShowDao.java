@@ -1,6 +1,5 @@
 package fr.aygalinc.tv.server.show;
 
-import fr.aygalinc.tv.server.show.model.ShowExtraInformation;
 import fr.aygalinc.tv.server.show.model.ShowItem;
 import fr.aygalinc.tv.server.show.model.ShowMainInformation;
 import fr.aygalinc.tv.server.util.client.TvMazeClientUtil;
