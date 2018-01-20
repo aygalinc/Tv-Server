@@ -1,5 +1,6 @@
 package fr.aygalinc.tv.server.show;
 
+import fr.aygalinc.tv.server.exception.InternalServerException;
 import fr.aygalinc.tv.server.show.model.ShowItem;
 import fr.aygalinc.tv.server.show.model.ShowMainInformation;
 import fr.aygalinc.tv.server.util.JsonUtil;
@@ -26,8 +27,8 @@ public class ShowController {
         String id = request.params(":id");
 
         if (id == null){
-            response.status(404);
-            return null;
+            response.status(500);
+            throw new InternalServerException();
         }
 
         try {
@@ -36,12 +37,11 @@ public class ShowController {
         }catch (NumberFormatException e){
             LOG.error("Invalid parameter form for /showd/:id",e);
             response.status(500);
+            throw new InternalServerException(e);
         }catch (IOException e){
             LOG.error("Error occurs during serialization",e);
-            response.status(500);
+            throw new InternalServerException(e);
         }
-
-        return null;
     };
 
     public Route getShows = (Request request, Response response) -> {
@@ -49,7 +49,8 @@ public class ShowController {
         String id = request.queryParams("search");
 
         if (id == null){
-            return null;
+            response.status(500);
+            throw new InternalServerException();
         }
 
         List<ShowMainInformation> shows = showDao.getShowByName(id);
@@ -62,8 +63,8 @@ public class ShowController {
         String id = request.params(":id");
 
         if (id == null){
-            response.status(404);
-            return null;
+            response.status(500);
+            throw new InternalServerException();
         }
 
 
@@ -76,6 +77,10 @@ public class ShowController {
 
             try (OutputStream out = response.raw().getOutputStream()) {
                 ImageIO.write(ImageIO.read(f), "jpg", out);
+            }catch (IOException e){
+                LOG.error("Error occurs when trying to write the show image as response");
+                response.status(500);
+                throw new InternalServerException(e);
             }finally {
                 response.raw().getOutputStream().close();
             }
@@ -84,8 +89,9 @@ public class ShowController {
 
         }catch (NumberFormatException e){
             response.status(500);
-            return null;
+            throw new InternalServerException(e);
         }
+
 
     };
 

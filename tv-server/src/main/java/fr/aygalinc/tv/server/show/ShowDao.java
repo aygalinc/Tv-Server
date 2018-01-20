@@ -1,5 +1,6 @@
 package fr.aygalinc.tv.server.show;
 
+import fr.aygalinc.tv.server.exception.InternalServerException;
 import fr.aygalinc.tv.server.show.model.ShowItem;
 import fr.aygalinc.tv.server.show.model.ShowMainInformation;
 import fr.aygalinc.tv.server.util.client.TvMazeClientUtil;
@@ -25,7 +26,7 @@ public class ShowDao{
     // In case of concurrent request multiple thread can access to the map, so it mus support concurrency
     private Map<Long, ShowTimeStampWrapper> shows = new ConcurrentHashMap<>();
 
-    public ShowItem getShowById(Long key){
+    public ShowItem getShowById(Long key) throws InternalServerException {
 
         if (key == null){
             throw new InvalidParameterException();
@@ -56,7 +57,7 @@ public class ShowDao{
             return showTimeStampWrapper.getShowItem();
         } catch (IOException e) {
             LOG.error("Error occurs when demanding",e);
-            return null;
+            throw new InternalServerException(e);
         }
     }
 

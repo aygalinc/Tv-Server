@@ -3,6 +3,7 @@ package fr.aygalinc.tv.server.util.client;
 /**
  * Created by aygalinc on 19/01/18.
  */
+//TvMAze const
 public class TvMazeUtil {
 
     protected static final String API_URL="http://api.tvmaze.com/";
