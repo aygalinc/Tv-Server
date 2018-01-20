@@ -17,8 +17,12 @@ public class JsonUtil {
         JsonHttpContent content = new JsonHttpContent(JSON_FACTORY, obj);
         ByteArrayOutputStream out = new ByteArrayOutputStream();
 
-        content.writeTo(out);
-        return out.toString("UTF-8");
+        try {
 
+           content.writeTo(out);
+           return out.toString("UTF-8");
+       }finally {
+           out.close();
+       }
     }
 }
