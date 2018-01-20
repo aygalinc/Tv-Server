@@ -55,7 +55,7 @@ public class ShowController {
 
         List<ShowMainInformation> shows = showDao.getShowByName(id);
 
-        return JsonUtil.serialize(shows);
+        return JsonUtil.serializeItemsId(shows);
     };
 
     public Route getShowImage = (Request request, Response response) -> {
