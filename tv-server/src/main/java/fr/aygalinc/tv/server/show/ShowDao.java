@@ -29,7 +29,7 @@ public class ShowDao{
     public ShowItem getShowById(Long key) throws InternalServerException {
 
         if (key == null){
-            throw new InvalidParameterException();
+            throw new InternalServerException(new IllegalArgumentException("null key is not allowed"));
         }
 
         /**
